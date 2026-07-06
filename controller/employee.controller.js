@@ -1,5 +1,6 @@
 import Express from 'express';
 import { Employee } from '../model/employee.model.js';
+import {uploadToCloudinary} from '../utils/cloudinary.js'
 
 // 1. create employee record
 export const createEmployee = async (req, res) => {
@@ -74,4 +75,35 @@ export const deleteEmployee = async (req, res) => {
             error: err.message
         })
     }
+}
+
+//5. Register user & upload avatar image
+
+export const registerUser = async (req, res) => {
+    try{
+        const { username, email, role } = req.body;
+        let avatarUrl = "";
+        if(req.file){
+            const localFilePath = req.file.path;
+
+            const cloudinaryResponse = await uploadToCloudinary(localFilePath);
+            avatarUrl = cloudinaryResponse.secure_url;
+        }
+
+        const newUser = await Employee.create({
+            username,
+            email,
+            role,
+            avatarUrl : avatarUrl
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "User registered completely with profile picture!",
+            Details: newUser
+        })
+    }catch(err){
+        res.status(500).json({ success: false, error: err.message})
+    }
+
 }
