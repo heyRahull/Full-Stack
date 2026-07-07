@@ -43,7 +43,12 @@ export const getAllEmployees = async (req, res) => {
 export const updateEmployee = async (req, res) => {
     try{
         const {id} = req.params;
-        const updatedEmployeeRecord = await Employee.findByIdAndUpdate(id,req.body ,{new:true});
+        // const updatedEmployeeRecord = await Employee.findByIdAndUpdate(id,req.body ,{new:true});
+        const employee = await Employee.findById(id);
+        if(!employee){ res.status(404).json({ success: false, message: "Employee not found"})}
+        Object.assign(employee, req.body);
+        const updatedEmployeeRecord = await employee.save();
+        
         res.status(200).json({
             success: true,
             message: "Successfully updated employee details",
