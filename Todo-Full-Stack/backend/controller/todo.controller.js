@@ -34,3 +34,58 @@ export const getAllTodos = async (req, res) => {
         })
     }
 }
+
+export const deleteTodo = async (req, res) => {
+    try{
+        const {id} = req.params;
+        const deletedTodo = await Todo.findByIdAndDelete(id);
+        res.status(200).json({
+            success: true,
+            message: "Successfully Deleted Todo",
+            todo: deletedTodo
+        })
+    }catch(err){
+        res.status(500).json({
+            success: true,
+            message: "Not able to delete Todo",
+            error: err.message
+        })
+    }
+}
+
+// export const doneTodo = async (req, res) => {
+//     try{
+//         const {id} = req.params;
+//         const doneTodo = await Todo.findByIdAndUpdate(id, req.body, {new:true});
+//         res.status(200).json({
+//             success: true,
+//             message: "Successfully updated Todo",
+//             todo: doneTodo
+//         })
+        
+//     }catch(err){
+//         res.status(500).json({
+//             success: false,
+//             message: "Not able to Update Todo",
+//             error: err.message
+//         })
+//     }
+// }
+
+export const updateTodo = async (req, res) => {
+    try{
+        const {id} = req.params;
+        const updatedTodo = await Todo.findByIdAndUpdate(id, {$set: req.body}, {new: true, runValidators: true});
+        res.status(200).json({
+            success: true,
+            message:"Successfully updated todo",
+            todo: updatedTodo
+        })
+    }catch(err){
+        res.status(500).json({
+            success: false,
+            message: "Not able to update Todo",
+            error: err.message
+        })
+    }
+}
