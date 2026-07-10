@@ -75,7 +75,7 @@ export const deleteTodo = async (req, res) => {
 export const updateTodo = async (req, res) => {
     try{
         const {id} = req.params;
-        const updatedTodo = await Todo.findByIdAndUpdate(id, {$set: req.body}, {new: true, runValidators: true});
+        const updatedTodo = await Todo.findByIdAndUpdate(id, {$set: req.body}, {returnDocument: 'after', runValidators: true});
         res.status(200).json({
             success: true,
             message:"Successfully updated todo",
