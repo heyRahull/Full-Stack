@@ -1,0 +1,11 @@
+{   
+    "compilerOptions": {  
+            "target": "es6",   
+            "outDir": "Outfile",  
+            "sourceMap": true
+        },   
+    "files": [    
+            "first_demo.ts",	
+            "second_demo.ts"   
+    ]
+}            
